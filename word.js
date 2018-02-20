@@ -1,5 +1,5 @@
 //packages
-var letters = require("./Letter.js");
+var Letters = require("./letter.js");
 const fs = require('fs');
 
 //Constructor
