@@ -5,29 +5,62 @@ var isLetter = require('is-letter');
 
 //Link file
 var word = require('./word.js');
+var game = require('./game.js');
 
-//messages and prompts
-prompt.start();
+//game variables
+var words = game.newWord.wordList;
+var remainingGuesses = 7;
+var lettersGuessed = [];
+var currentWord;
 
-var game = {
-  words : ["red", "yellow", "orange", "pink", "blue", "purple", "green"],
-  guessesRemaining: 7,
-  letterGuessed: '';
-  victories: 0,
-  losses: 0,
-  currentWord: function(){
-    return new Word(this.words[1])
-  },
-  showWord: function() {
-    var what = this.currentWord().wordState();
-    var idk = what.map(function(val){
-      return val.appear;
-    });
-    return idk;
-  },
-  startGame: function(){
-    console.log("Thank you for playing Constructor Hangman");
-    console.log("Guess the color! You have seven guesses");
-    console.log("Have Fun!");
+//start game
+startGame();
+
+function startGame() {
+console.log("Thank you for playing Constructor Hangman!");
+
+if(lettersGuessed.length > 0){
+  lettersGuessed = [];
+}
+inquirer.prompt([
+  {
+    name: 'Time to play?',
+    type: 'confirm',
+    message: 'Time to get started. Ready?'
   }
+]).then(function (answer){
+  if(answer.play){
+    console.log(' ');
+    console.log("Guess the color! You have seven guesses!");
+    console.log("Have Fun!");
+    resetGame();
+  } else {
+    console.log('See you next time!');
+  }
+})
+}
+
+function resetGame(){
+  if(remainingGuesses === 7) {
+    var randomWord = Math.floor(Math.random() * word.length);
+    currentWord = new Word(word[randomWord]);
+    currentWord.getLetters();
+    console.log('');
+    console.log(currentWord.wordRender());
+    console.log('');
+    promptPlayer();
+  }else{
+    resetGuesses();
+    resetGame();
+  }
+}
+
+function resetGuesses() {
+  remainingGuesses = 7
+}
+
+function promptPlayer() {
+  inquirer.prompt([
+    {}
+  ])
 }

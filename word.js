@@ -1,6 +1,5 @@
 //packages
 var Letters = require("./letter.js");
-const fs = require('fs');
 
 //Constructor
 function word(werd) {
@@ -48,4 +47,4 @@ this.workRender = function(){
 };
 
 }
-module.exports = Word;
+module.exports = word;
