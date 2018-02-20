@@ -1,0 +1,19 @@
+{
+  "name": "js-constructor-hangman",
+  "version": "1.0.0",
+  "description": "a hangman command-line game using constructor functions!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Toyosio/js-constructor-hangman.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Toyosio/js-constructor-hangman/issues"
+  },
+  "homepage": "https://github.com/Toyosio/js-constructor-hangman#readme"
+}
