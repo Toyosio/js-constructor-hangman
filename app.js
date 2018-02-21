@@ -4,64 +4,58 @@ var prompt = require('prompt');
 var isLetter = require('is-letter');
 
 //Link file
-var word = require('./word.js');
-var game = require('./game.js');
+var Word = require('./word.js');
+var Game = require('./game.js');
 
 //game variables
-var words = game.newWord.wordList;
+var wordConstr = Game.newWord.wordList;
 var remainingGuesses = 7;
 var lettersGuessed = [];
-var currentWord;
-
-//start game
-startGame();
+var currentWord = null;
 
 function startGame() {
+  var that = this;
 console.log("Thank you for playing Constructor Hangman!");
 console.log("Guess the color, you have 7 guesses!");
 console.log("Enjoy!");
 
-if(lettersGuessed.length > 0){
-  lettersGuessed = [];
-}
+if(that.lettersGuessed > 0){
+  that.lettersGuessed = [];
+};
 inquirer.prompt([
   {
-    name: 'Time to play!',
+    name: 'play',
     type: 'confirm',
     message: 'Time to get started. Ready?'
   }
 ]).then(function (answer){
   if(answer.play){
-    console.log(' ');
-    console.log("Guess the color! You have seven guesses!");
-    console.log("Have Fun!");
     resetGame();
   } else {
     console.log('See you next time!');
   }
-})
-}
+});
+};
 
 function resetGame(){
-  if(remainingGuesses === 7) {
-    var randomWord = Math.floor(Math.random() * word.length);
-    currentWord = new Word(word[randomWord]);
-    currentWord.getLetters();
-    console.log('');
-    console.log(currentWord.wordRender());
-    console.log('');
-    promptPlayer();
+  if(that.remainingGuesses === 7) {
+    var randomWord = Math.floor(Math.random() * that.wordConstr.length);
+    that.currentWord = new Word(that.wordConstr[randomWord]);
+    that.currentWord.getLetters();
+    console.log(that.currentWord.wordRender());
+    that.promptPlayer();
   }else{
-    resetGuesses();
-    resetGame();
+    that.resetGuesses();
+    that.resetGame();
   }
 }
 
 function resetGuesses() {
-  remainingGuesses = 7
+  that.remainingGuesses = 7
 };
 
 function promptPlayer() {
+  var that = this;
   inquirer.prompt([
     {
       name: 'chosenLetter',
@@ -76,43 +70,45 @@ function promptPlayer() {
       }
   }]).then(function(letter){
     var guessedLetter = false;
-    for(var i = 0; i < lettersGuessed.length; i++){
-      if(letterReturned === lettersGuessed[i]){
+    for(var i = 0; i < that.lettersGuessed.length; i++){
+      if(letterReturned === that.lettersGuessed[i]){
         guessedLetter = true;
       }
     }
     if(guessedLetter === false) {
-      lettersGuessed.push(letterReturned);
+      that.lettersGuessed.push(letterReturned);
 
-      var foundLetter = currentWord.checkIfLetterFound(letterReturned)
+      var foundLetter = that.currentWord.checkIfLetterFound(letterReturned)
       if(found === 0){
         console.log('Oops try again!');
 
-        remainingGuesses --;
+        that.remainingGuesses --;
 
-        console.log('Guesses Left: '+ remainingGuesses);
-        console.log('Letters Guessed: '+ lettersGuessed);
+        console.log('Guesses Left: '+ that.remainingGuesses);
+        console.log(that.currentWord.wordRender());
+        console.log('Letters Guessed: '+ that.lettersGuessed);
       }else{
         console.log('Great Guess!');
-        if(currentWord.checkWord() === true){
-          console.log(currentWord.wordRender())
+        if(that.currentWord.checkWord() === true){
+          console.log(that.currentWord.wordRender())
           console.log('YOU WIN');
           startGame();
         }else{
           console.log('Guesses Left: '+ remainingGuesses);
-          console.log(currentWord.wordRender());
-          console.log('Letters Guessed: '+ lettersGuessed);
+          console.log(that.currentWord.wordRender());
+          console.log('Letters Guessed: '+ that.lettersGuessed);
         }
       }
-      if(remainingGuesses > 0 && currentWord.wordFound === false){
-        promptPlayer();
-      } else if (remainingGuesses === 0){
+      if(that.remainingGuesses > 0 && that.currentWord.wordFound === false){
+        that.promptPlayer();
+      } else if (that.remainingGuesses === 0){
         console.log('Game Over');
-        console.log('The correct word was: '+ currentWord.word);
+        console.log('The correct word was: '+ that.currentWord.Word);
       }
     }else{
       console.log('Letter already used, please try again!');
-      promptPlayer();
+      that.promptPlayer();
     }
   })
 }
+startGame();
