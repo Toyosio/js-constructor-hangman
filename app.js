@@ -35,7 +35,7 @@ inquirer.prompt([
     console.log(' ');
     console.log("Guess the color! You have seven guesses!");
     console.log("Have Fun!");
-    promptPlayer();
+    resetGame();
   } else {
     console.log('See you next time!');
   }
